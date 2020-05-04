@@ -10,12 +10,12 @@ if [[ "${#@}" -ne "2" ]]; then
 fi
 
 if [[ "$1" != "--test-args" ]]; then
-  echo "ERROR: Expected first arguments to be '--test-args' but received '$1'"
+  echo "ERROR: Expected first argument to be '--test-args' but received '$1'"
   exit 1
 fi
 
-if [[ "$2" != "1 2 3 *" ]]; then
-  echo "ERROR: Expected second arguments to be '1 2 3 *' but received '$2'"
+if [[ "$2" != '1 2 3 *' ]]; then
+  echo "ERROR: Expected second argument to be '1 2 3 *' but received '$2'"
   exit 1
 fi
 
