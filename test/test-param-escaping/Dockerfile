@@ -1,0 +1,21 @@
+FROM amazonlinux
+MAINTAINER Gruntwork <info@gruntwork.io>
+
+RUN set -ex; \
+  yum update -y; \
+  yum install -y curl sudo vim unzip cronie perl-DateTime perl-Digest-SHA perl-LWP-Protocol-https perl-Switch perl-Sys-Syslog
+
+RUN sh -ex; \
+  curl -LsS https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/master/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version "v0.0.24";
+
+ARG GITHUB_OAUTH_TOKEN
+ENV GITHUB_OAUTH_TOKEN="${GITHUB_OAUTH_TOKEN}"
+
+ADD ./install.sh /install.sh
+
+RUN /install.sh
+
+RUN /bin/bash -ex; \
+  gruntwork-install --module-name 'metrics/cloudwatch-memory-disk-metrics-scripts' --tag 'v0.21.0' --repo 'https://github.com/gruntwork-io/module-aws-monitoring' --module-param 'cron-schedule=*/5 * * * *'
+
+CMD ["echo", "This container is used for testing. Consider running one of the test scripts under the /test folder."]
